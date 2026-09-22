@@ -139,6 +139,8 @@
           <button class="sidebar__type is-active" data-type="live">📡 Canales en vivo</button>
           <button class="sidebar__type" data-type="movie">🎬 Películas</button>
           <button class="sidebar__type" data-type="series">📺 Series</button>
+          <button class="sidebar__type" data-type="continue">⏯ Continuar viendo</button>
+          <button class="sidebar__type" data-type="favorites">⭐ Favoritos</button>
         </div>
         <div class="sidebar__divider"></div>
         <div class="sidebar__section" id="category-list">
@@ -165,6 +167,41 @@
       </section>
     </div>
 
+    <!-- Modal de detalle de serie: temporadas y episodios -->
+    <div class="series-modal-overlay" id="series-modal-overlay" hidden>
+      <div class="series-modal">
+        <button class="series-modal__close" id="series-modal-close" aria-label="Cerrar">✕</button>
+
+        <div class="series-modal__loading" id="series-modal-loading">
+          <div class="spinner"></div>
+          <p>Buscando temporadas y episodios...</p>
+        </div>
+
+        <div class="series-modal__header">
+          <div class="series-modal__poster-wrap">
+            <img class="series-modal__poster" id="series-modal-poster" src="" alt="">
+          </div>
+          <div class="series-modal__info">
+            <h2 class="series-modal__title" id="series-modal-title">—</h2>
+            <p class="series-modal__meta" id="series-modal-meta"></p>
+            <p class="series-modal__plot" id="series-modal-plot"></p>
+          </div>
+        </div>
+
+        <div class="series-modal__body">
+          <div class="series-modal__resume" id="series-modal-resume" hidden>
+            <span id="series-modal-resume-text"></span>
+            <button type="button" class="series-modal__resume-btn" id="series-modal-resume-btn">▶ Continuar</button>
+          </div>
+          <div class="season-tabs" id="season-tabs" role="tablist" aria-label="Temporadas"></div>
+          <div class="episode-list" id="episode-list"></div>
+          <div class="series-modal__empty" id="series-modal-empty" hidden>
+            <p>Esta serie no tiene temporadas ni episodios cargados en el servidor todavía.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Reproductor -->
     <div class="player-overlay" id="player-overlay" hidden>
       <div class="player-shell">
@@ -178,6 +215,13 @@
             <div class="spinner"></div>
             <span id="player-status-text">Conectando con el canal...</span>
           </div>
+        </div>
+        <div class="player-shell__volume-boost" id="volume-boost-row">
+          <span class="player-shell__volume-icon">🔊</span>
+          <span class="player-shell__volume-label">Volumen extra</span>
+          <input type="range" id="volume-boost-slider" min="100" max="400" step="25" value="100"
+            aria-label="Volumen adicional, además del volumen del dispositivo">
+          <span class="player-shell__volume-value" id="volume-boost-value">100%</span>
         </div>
       </div>
     </div>
