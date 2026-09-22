@@ -1,6 +1,6 @@
 /* Subí este número (v2, v3...) cada vez que actualices app.js/index.html/styles.css
    para forzar a que se borre el caché viejo y todos vean la versión nueva. */
-const CACHE = "quilla-v3";
+const CACHE = "quilla-v4";
 
 /* Rutas relativas: así funcionan tanto en un dominio propio como en GitHub
    Pages sirviendo desde una subcarpeta (https://usuario.github.io/repo/). */
