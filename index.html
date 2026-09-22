@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IPTV Quilla Streaming</title>
+  <link rel="icon" href="quilla.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#7b2ff7">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+  <!-- Fondo decorativo -->
+  <div class="bg-glow bg-glow--magenta"></div>
+  <div class="bg-glow bg-glow--cyan"></div>
+  <div class="skyline-strip" aria-hidden="true"></div>
+
+  <!-- ====================== PANTALLA DE LOGIN ====================== -->
+  <main id="screen-login" class="screen screen--login">
+    <div class="login-card">
+      <div class="brand">
+        <img src="quilla.png" alt="IPTV Quilla Streaming" class="brand__logo">
+      </div>
+
+      <div class="tabs" role="tablist" aria-label="Tipo de conexión">
+        <button class="tab is-active" id="tab-xtream" role="tab" aria-selected="true" data-target="form-xtream">Xtream
+          Codes</button>
+        <button class="tab" id="tab-m3u" role="tab" aria-selected="false" data-target="form-m3u">Lista M3U</button>
+      </div>
+
+      <!-- Formulario Xtream Codes -->
+      <form id="form-xtream" class="login-form is-active" autocomplete="off">
+        <label class="field">
+          <span class="field__label">URL del servidor</span>
+          <input type="text" id="xt-url" placeholder="http://servidor.com:8080" required>
+        </label>
+        <label class="field">
+          <span class="field__label">Usuario</span>
+          <input type="text" id="xt-user" placeholder="usuario" required autocomplete="username">
+        </label>
+        <label class="field">
+          <span class="field__label">Contraseña</span>
+          <div class="field__pw-wrap">
+            <input type="password" id="xt-pass" placeholder="••••••••" required autocomplete="current-password">
+            <button type="button" class="pw-toggle" data-for="xt-pass" aria-label="Mostrar contraseña">👁</button>
+          </div>
+        </label>
+        <label class="field">
+          <span class="field__label">Nombre de esta lista</span>
+          <input type="text" id="xt-name" placeholder="Ej: Lista Principal">
+        </label>
+        <label class="checkbox-row">
+          <input type="checkbox" id="xt-remember" checked>
+          <span>Recordar esta conexión en este dispositivo</span>
+        </label>
+        <button type="submit" class="btn-primary">
+          <span class="btn-primary__label">Conectar</span>
+          <span class="btn-primary__spinner" hidden></span>
+        </button>
+        <p class="form-error" id="xt-error" role="alert" hidden></p>
+      </form>
+
+      <!-- Formulario Lista M3U -->
+      <form id="form-m3u" class="login-form" autocomplete="off">
+        <label class="field">
+          <span class="field__label">URL de la lista M3U</span>
+          <input type="text" id="m3u-url" placeholder="http://servidor.com/lista.m3u">
+          <span class="field__hint">Debe ser una URL directa a un archivo .m3u o .m3u8</span>
+        </label>
+
+        <div class="or-divider"><span>o</span></div>
+
+        <label class="field">
+          <span class="field__label">Subir archivo M3U</span>
+          <div class="file-drop" id="m3u-file-drop">
+            <input type="file" id="m3u-file" accept=".m3u,.m3u8,audio/x-mpegurl,application/x-mpegurl,application/vnd.apple.mpegurl,text/plain">
+            <span class="file-drop__icon">📂</span>
+            <span class="file-drop__text" id="m3u-file-label">Elegí un archivo o arrastralo acá</span>
+          </div>
+          <span class="field__hint">Formatos aceptados: .m3u / .m3u8</span>
+        </label>
+
+        <label class="field">
+          <span class="field__label">Nombre de esta lista (opcional)</span>
+          <input type="text" id="m3u-name" placeholder="Mi lista IPTV">
+        </label>
+        <label class="checkbox-row">
+          <input type="checkbox" id="m3u-remember" checked>
+          <span>Recordar esta lista en este dispositivo</span>
+        </label>
+        <button type="submit" class="btn-primary">
+          <span class="btn-primary__label">Cargar lista</span>
+          <span class="btn-primary__spinner" hidden></span>
+        </button>
+        <p class="form-error" id="m3u-error" role="alert" hidden></p>
+      </form>
+
+      <div class="saved-connections" id="saved-connections" hidden>
+        <p class="saved-connections__title">Conexiones guardadas</p>
+        <div class="saved-connections__list" id="saved-connections-list"></div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ====================== PANTALLA PRINCIPAL (GUÍA) ====================== -->
+  <div id="screen-app" class="screen screen--app" hidden>
+
+    <header class="topbar">
+      <div class="topbar__brand">
+        <img src="quilla.png" alt="" class="topbar__logo">
+        <span class="topbar__title">IPTV QUILLA <em>STREAMING</em></span>
+      </div>
+
+      <div class="topbar__search">
+        <input type="search" id="search-input" placeholder="Buscar canal o película...">
+      </div>
+
+      <div class="topbar__actions">
+        <span class="conn-pill" id="conn-pill">—</span>
+        <button class="icon-btn" id="btn-logout" title="Cambiar conexión">Salir</button>
+        <button class="icon-btn" id="switch-account">
+
+          Cambiar cuenta
+
+        </button>
+      </div>
+    </header>
+
+    <div class="app-body">
+      <nav class="sidebar" id="sidebar" aria-label="Categorías">
+        <div class="sidebar__section">
+          <button class="sidebar__type is-active" data-type="live">📡 Canales en vivo</button>
+          <button class="sidebar__type" data-type="movie">🎬 Películas</button>
+          <button class="sidebar__type" data-type="series">📺 Series</button>
+        </div>
+        <div class="sidebar__divider"></div>
+        <div class="sidebar__section" id="category-list">
+          <!-- categorías inyectadas por JS -->
+        </div>
+      </nav>
+
+      <section class="content">
+        <div class="content__header">
+          <h2 id="content-title">Canales en vivo</h2>
+          <span class="content__count" id="content-count"></span>
+        </div>
+        <div class="channel-grid" id="channel-grid">
+          <!-- canales inyectados por JS -->
+        </div>
+        <div class="empty-state" id="empty-state" hidden>
+          <p>No se encontraron resultados</p>
+          <span>Probá con otro término de búsqueda o categoría</span>
+        </div>
+        <div class="loading-state" id="loading-state" hidden>
+          <div class="spinner"></div>
+          <p>Cargando contenido...</p>
+        </div>
+      </section>
+    </div>
+
+    <!-- Reproductor -->
+    <div class="player-overlay" id="player-overlay" hidden>
+      <div class="player-shell">
+        <div class="player-shell__header">
+          <span class="player-shell__title" id="player-title">—</span>
+          <button class="player-shell__close" id="player-close" aria-label="Cerrar reproductor">✕</button>
+        </div>
+        <div class="player-shell__video-wrap">
+          <video id="video-player" controls playsinline></video>
+          <div class="player-shell__status" id="player-status" hidden>
+            <div class="spinner"></div>
+            <span id="player-status-text">Conectando con el canal...</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.13/dist/hls.min.js"></script>
+  <script src="app.js"></script>
+</body>
+
+</html>
